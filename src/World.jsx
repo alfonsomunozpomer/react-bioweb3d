@@ -6,7 +6,8 @@ import TrackballControls from '../lib/trackball';
 
 import DataSet from './DataSet.jsx'
 
-const {name, chain, points} = require(`../data/platynereis.json`).dataset;
+const {name, chain, points} = require(`../data/platynereis_32203.json`).dataset;
+const informationLayer = require(`../data/C4x13.1M.json`).information[0];
 
 class World extends React.Component {
     constructor(props, context) {
@@ -25,30 +26,42 @@ class World extends React.Component {
         const width = this.props.width; // canvas width
         const height = this.props.height; // canvas height
 
+        console.log(this.state.mainCameraPosition);
+
         return (
-            <React3 ref="react3"
-                    mainCamera="camera" // this points to the perspectiveCamera which has the name set to "camera" below
-                    width={width}
-                    height={height}
-                    onAnimate={this._onAnimate}>
-                <scene>
-                    <perspectiveCamera name="camera"
-                                       ref="mainCamera"
-                                       fov={75}
-                                       aspect={width / height}
-                                       near={0.1}
-                                       far={1000}
-                                       position={this.state.mainCameraPosition} />
-                    <DataSet name={name} chain={chain} points={points} />
-                </scene>
-            </React3>
+            <div>
+                <div style={{position:`absolute`, color:`white`}}>
+                    <div>
+                        <p style={{fontSize: `20px`, fontWeight: `bold`}}>{name}</p>
+                    </div>
+                    <div>
+                        <p>{informationLayer.name}</p>
+                    </div>
+                </div>
+                <React3 ref={react3 =>  { this.react3 = react3; }}
+                        mainCamera="camera" // this points to the perspectiveCamera which has the name set to "camera" below
+                        width={width}
+                        height={height}
+                        antialias={true}
+                        onAnimate={this._onAnimate}>
+                    <scene>
+                        <perspectiveCamera name="camera"
+                                           ref={mainCamera => { this.mainCamera = mainCamera; }}
+                                           aspect={width / height}
+                                           near={1}
+                                           far={10000}
+                                           position={this.state.mainCameraPosition} />
+                        <DataSet name={name} chain={chain} points={points} informationLayer={informationLayer} />
+                    </scene>
+                </React3>
+            </div>
         );
     }
 
     componentDidMount() {
         // document.addEventListener('keydown', this._onKeyDown, false);
 
-        const controls = new TrackballControls(this.refs.mainCamera, ReactDOM.findDOMNode(this.refs.react3));
+        const controls = new TrackballControls(this.mainCamera, ReactDOM.findDOMNode(this.react3));
         controls.rotateSpeed = 3.0;
         controls.zoomSpeed = 1.2;
         controls.panSpeed = 3.0;
@@ -59,11 +72,12 @@ class World extends React.Component {
         controls.staticMoving = true;
         controls.dynamicDampingFactor = 0.3;
 
-        controls.addEventListener('change', () => {
-            this.setState({
-                mainCameraPosition: this.refs.mainCamera.position
-            });
-        });
+        // Avoid re-rendering the whole scene again
+        // controls.addEventListener(`change`, () => {
+        //     this.setState({
+        //         mainCameraPosition: this.mainCamera.position
+        //     });
+        // });
 
         this.controls = controls;
     }
