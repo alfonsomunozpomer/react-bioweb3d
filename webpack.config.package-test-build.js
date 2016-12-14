@@ -23,10 +23,10 @@ module.exports = {
 
     module: {
         loaders: [
-            {test: /\.js$/, loader: 'babel', query: {presets: ['es2015']},
+            {test: /\.js$/, loader: 'babel', query: {presets: ['latest'], plugins: ['transform-class-properties']},
                 // Place here all the packages that we own
                 exclude: /node_modules\/(?!(expression-atlas|anatomogram|react-ebi-species))/},
-            {test: /\.jsx$/, loader: 'babel', query: {presets: ['es2015', 'react']}},
+            {test: /\.jsx$/, loader: 'babel', query: {presets: ['latest', 'react'], plugins: ['transform-class-properties']}},
             {test: /\.css$/, loader: 'style-loader!css-loader'},
             {test: /\.less$/, loader: 'style-loader!css-loader!less-loader'},
             {test: /\.json$/, loader: 'json'},
