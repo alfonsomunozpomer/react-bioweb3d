@@ -9,7 +9,7 @@ class DataSet extends React.Component {
 
     render() {
         const {datasetFetch, informationLayerFetch} = this.props;
-        const allFetches = PromiseState.all([datasetFetch, informationLayerFetch])
+        const allFetches = PromiseState.all([datasetFetch, informationLayerFetch]);
 
         if (allFetches.pending) {
             this.props.setSceneCaptionsCallback(`Loading...`, `Please wait`);
@@ -45,20 +45,20 @@ class DataSet extends React.Component {
             );
         }
 
-        // It would be weird to have the information layer without the data set, but it could happen
-        if (this.state.dataset && this.state.informationLayer) {
-
-        } else if (this.state.dataset) {
-            return (
-                <points>
-                    <geometry
-                        vertices={this._centerAll(points).map(triplet => new THREE.Vector3(triplet[0], triplet[1], triplet[2]))}/>
-                    <pointsMaterial color={0xffffff} size={2.0} opacity={0.2} transparent={true}/>
-                </points>
-            );
-        } else {
-            return (null);
-        }
+        // // It would be weird to have the information layer without the data set, but it could happen
+        // if (this.state.dataset && this.state.informationLayer) {
+        //
+        // } else if (this.state.dataset) {
+        //     return (
+        //         <points>
+        //             <geometry
+        //                 vertices={this._centerAll(points).map(triplet => new THREE.Vector3(triplet[0], triplet[1], triplet[2]))}/>
+        //             <pointsMaterial color={0xffffff} size={2.0} opacity={0.2} transparent={true}/>
+        //         </points>
+        //     );
+        // } else {
+        //     return (null);
+        // }
     }
 
     _computeCenterFunction = (points) => {
