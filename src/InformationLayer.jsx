@@ -1,9 +1,10 @@
 import React from 'react';
 import * as THREE from 'three';
+import {arrayOfThreeNumbers} from './PropTypes.js';
 
 class InformationLayer extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
 
         console.assert(this.props.values.length === this.props.points.length,
             `Reference dataset has ${this.props.points.length.toLocaleString('en')} points and information ` +
@@ -56,9 +57,9 @@ class InformationLayer extends React.Component {
 }
 
 InformationLayer.propTypes = {
-    // points: React.PropTypes.string.isRequired,
-    // numClass: React.PropTypes.number.isRequired,
-    // values: React.PropTypes.arrayOf(React.PropTypes.number).isRequired,
+    points: React.PropTypes.arrayOf(arrayOfThreeNumbers),
+    numClass: React.PropTypes.number,
+    values: React.PropTypes.arrayOf(React.PropTypes.number)
 };
 
 export default InformationLayer;
