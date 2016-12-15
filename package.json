@@ -13,7 +13,8 @@
     "react-dom": "^15.4.1",
     "react-refetch": "^1.0.0",
     "react-three-renderer": "^3.0.0",
-    "three": "^0.82.1"
+    "three": "^0.82.1",
+    "whatwg-fetch": "^2.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
