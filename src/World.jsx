@@ -13,7 +13,7 @@ class World extends React.Component {
         super(props, context);
 
         this.state = {
-            mainCameraPosition: new THREE.Vector3(100, 100, 100),
+            mainCameraPosition: new THREE.Vector3(1, 200, 0.2),
             rotation: new THREE.Euler()
         };
     }
@@ -36,7 +36,8 @@ class World extends React.Component {
             const datasetModel = datasetFetch.value.dataset;
 
             title = datasetModel.name;
-            dataset = <DataSet points={datasetModel.points.map(this._computeCenterFunction(datasetModel.points))} rotation={this.state.rotation} />;
+            const centeredPoints = datasetModel.points.map(this._computeCenterFunction(datasetModel.points));
+            dataset = <DataSet points={centeredPoints} rotation={this.state.rotation} />;
 
             if (informationLayerFetch.fulfilled) {
                 const informationLayerModel = informationLayerFetch.value;
@@ -44,7 +45,7 @@ class World extends React.Component {
                 subHeader = informationLayerModel.name;
                 informationLayer =
                     <InformationLayer
-                        points={datasetModel.points.map(this._computeCenterFunction(datasetModel.points))}
+                        points={centeredPoints}
                         numClass={informationLayerModel.numClass}
                         values={informationLayerModel.values}
                         rotation={this.state.rotation}
@@ -76,8 +77,7 @@ class World extends React.Component {
                                            far={10000}
                                            position={this.state.mainCameraPosition} />
                         <group rotation={this.state.rotation}>
-                            {dataset}
-                            {informationLayer}
+                            {informationLayer ? informationLayer : dataset}
                         </group>
                     </scene>
                 </React3>
