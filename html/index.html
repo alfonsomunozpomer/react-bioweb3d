@@ -43,8 +43,8 @@
     <!-- All JavaScript at the bottom, except for Modernizr -->
     <script src="https://www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/libraries/modernizr/modernizr.custom.49274.js"></script>
 
-    <script src="../dist/vendorCommons.bundle.js"></script>
-    <script src="../dist/worldRenderer.bundle.js"></script>
+    <script src="../dist/vendorCommonsRBW3D.bundle.js"></script>
+    <script src="../dist/reactBioWeb3D.bundle.js"></script>
 </head>
 
 <body>
@@ -52,7 +52,8 @@
         <div class="small-2 small-centered columns">
             <div class="row">
                 <label>Cell type:
-                    <select id="cell-type-select" name="Cell type" onchange="render(this)">
+                    <select id="cell-type-select" name="Cell type" onchange="renderOnSelectChange(this)">
+                        <option value="">Raw data</option>
                         <option value="C1x30_1L">C1x30_1L</option>
                         <option value="C1x41_1L">C1x41_1L</option>
                         <option value="C1x47_1L">C1x47_1L</option>
@@ -205,10 +206,16 @@
 </body>
 
 <script>
-    worldRenderer.render('/data/platynereis_dumerilii_32203/dataset.json', '/data/platynereis_dumerilii_32203/C1x30_1L.json');
+    reactBioWeb3D.render({
+        baseUrl: '',
+        datasetFilePath: '/data/platynereis_dumerilii_32203/dataset.json'
+        });
 
-    function render(obj) {
-        worldRenderer.render('/data/platynereis_dumerilii_32203/dataset.json', '/data/platynereis_dumerilii_32203/' + obj.value + '.json');
+    function renderOnSelectChange(obj) {
+        reactBioWeb3D.render({
+            baseUrl: '',
+            informationLayerFilePath: '/data/platynereis_dumerilii_32203/' + obj.value + '.json'
+        });
     }
 </script>
 
