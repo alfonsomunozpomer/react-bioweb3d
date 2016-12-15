@@ -811,22 +811,26 @@ webpackJsonp_name_([1],[
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	      value: true
+	       value: true
 	});
 	
 	exports.default = function (_ref) {
-	      var _ref$baseUrl = _ref.baseUrl,
-	          baseUrl = _ref$baseUrl === undefined ? '' : _ref$baseUrl,
-	          _ref$datasetFilePath = _ref.datasetFilePath,
-	          datasetFilePath = _ref$datasetFilePath === undefined ? '/data/platynereis_dumerilii_32203/dataset.json' : _ref$datasetFilePath,
-	          _ref$informationLayer = _ref.informationLayerFilePath,
-	          informationLayerFilePath = _ref$informationLayer === undefined ? '' : _ref$informationLayer;
+	       var _ref$baseUrl = _ref.baseUrl,
+	           baseUrl = _ref$baseUrl === undefined ? '' : _ref$baseUrl,
+	           _ref$datasetFilePath = _ref.datasetFilePath,
+	           datasetFilePath = _ref$datasetFilePath === undefined ? '/data/platynereis_dumerilii_32203/dataset.json' : _ref$datasetFilePath,
+	           _ref$informationLayer = _ref.informationLayerFilePath,
+	           informationLayerFilePath = _ref$informationLayer === undefined ? '' : _ref$informationLayer,
+	           _ref$mountNode = _ref.mountNode,
+	           mountNode = _ref$mountNode === undefined ? document.getElementById('container') : _ref$mountNode;
 	
 	
-	      var datasetFileUrl = _url2.default.resolve(baseUrl, datasetFilePath),
-	          informationLayerFileUrl = _url2.default.resolve(baseUrl, informationLayerFilePath);
+	       var datasetFileUrl = datasetFilePath ? _url2.default.resolve(baseUrl, datasetFilePath) : '';
+	       var informationLayerFileUrl = informationLayerFilePath ? _url2.default.resolve(baseUrl, informationLayerFilePath) : '';
 	
-	      _reactDom2.default.render(_react2.default.createElement(_World2.default, { datasetFileUrl: datasetFileUrl, informationLayerFileUrl: informationLayerFileUrl }), document.getElementById("container"));
+	       _reactDom2.default.render(_react2.default.createElement(_World2.default, { datasetFileUrl: datasetFileUrl,
+	              informationLayerFileUrl: informationLayerFileUrl
+	       }), mountNode);
 	};
 	
 	var _react = __webpack_require__(/*! react */ 1);
@@ -2413,6 +2417,10 @@ webpackJsonp_name_([1],[
 	        _this._onAnimate = function () {
 	            _this.controls.update();
 	
+	            if (_this.state.paused) {
+	                return;
+	            }
+	
 	            _this.setState({
 	                rotation: new THREE.Euler(_this.state.rotation.x + 0.012, 0, 0)
 	            });
@@ -2431,7 +2439,8 @@ webpackJsonp_name_([1],[
 	        };
 	
 	        _this.state = {
-	            mainCameraPosition: new THREE.Vector3(100, 100, 100),
+	            mainCameraPosition: new THREE.Vector3(1, 200, 0.2),
+	            paused: false,
 	            rotation: new THREE.Euler()
 	        };
 	        return _this;
@@ -2462,14 +2471,15 @@ webpackJsonp_name_([1],[
 	                var datasetModel = datasetFetch.value.dataset;
 	
 	                title = datasetModel.name;
-	                dataset = _react2.default.createElement(_DataSet2.default, { points: datasetModel.points.map(this._computeCenterFunction(datasetModel.points)), rotation: this.state.rotation });
+	                var centeredPoints = datasetModel.points.map(this._computeCenterFunction(datasetModel.points));
+	                dataset = _react2.default.createElement(_DataSet2.default, { points: centeredPoints, rotation: this.state.rotation });
 	
 	                if (informationLayerFetch.fulfilled) {
 	                    var informationLayerModel = informationLayerFetch.value;
 	
 	                    subHeader = informationLayerModel.name;
 	                    informationLayer = _react2.default.createElement(_InformationLayer2.default, {
-	                        points: datasetModel.points.map(this._computeCenterFunction(datasetModel.points)),
+	                        points: centeredPoints,
 	                        numClass: informationLayerModel.numClass,
 	                        values: informationLayerModel.values,
 	                        rotation: this.state.rotation
@@ -2526,8 +2536,7 @@ webpackJsonp_name_([1],[
 	                        _react2.default.createElement(
 	                            'group',
 	                            { rotation: this.state.rotation },
-	                            dataset,
-	                            informationLayer
+	                            informationLayer ? informationLayer : dataset
 	                        )
 	                    )
 	                )
@@ -2536,7 +2545,7 @@ webpackJsonp_name_([1],[
 	    }, {
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            // document.addEventListener('keydown', this._onKeyDown, false);
+	            var _this3 = this;
 	
 	            var controls = new _trackball2.default(this.mainCamera, _reactDom2.default.findDOMNode(this.react3));
 	            controls.rotateSpeed = 3.0;
@@ -2556,12 +2565,17 @@ webpackJsonp_name_([1],[
 	            //     });
 	            // });
 	
+	            controls.addEventListener('change', function () {
+	                _this3.setState({
+	                    paused: true
+	                });
+	            });
+	
 	            this.controls = controls;
 	        }
 	    }, {
 	        key: 'componentWillUnmount',
 	        value: function componentWillUnmount() {
-	            // document.removeEventListener('keydown', this._onKeyDown, false);
 	            this.controls.dispose();
 	            delete this.controls;
 	        }
@@ -2575,6 +2589,7 @@ webpackJsonp_name_([1],[
 	    height: _react2.default.PropTypes.number,
 	    datasetFileUrl: _react2.default.PropTypes.string,
 	    informationLayerFileUrl: _react2.default.PropTypes.string,
+	    animate: _react2.default.PropTypes.bool,
 	    datasetFetch: _react2.default.PropTypes.instanceOf(_reactRefetch.PromiseState),
 	    informationLayerFetch: _react2.default.PropTypes.instanceOf(_reactRefetch.PromiseState),
 	    updateStatus: _react2.default.PropTypes.func,
