@@ -208,19 +208,22 @@
 <script>
     reactBioWeb3D.render({
         baseUrl: '',
-        datasetFilePath: '/data/platynereis_dumerilii_32203/dataset.json'
+        datasetFilePath: '/data/platynereis_dumerilii_32203/dataset.json',
+        mountNode: document.getElementById('container')
     });
 
     function renderOnSelectChange(obj) {
         if (obj.value) {
             reactBioWeb3D.render({
                 baseUrl: '',
-                informationLayerFilePath: '/data/platynereis_dumerilii_32203/' + obj.value + '.json'
+                informationLayerFilePath: '/data/platynereis_dumerilii_32203/' + obj.value + '.json',
+                mountNode: document.getElementById('container')
             });
         } else {
             reactBioWeb3D.render({
                 baseUrl: '',
-                datasetFilePath: '/data/platynereis_dumerilii_32203/dataset.json'
+                datasetFilePath: '/data/platynereis_dumerilii_32203/dataset.json',
+                mountNode: document.getElementById('container')
             });
         }
 

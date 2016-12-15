@@ -14,6 +14,7 @@ class World extends React.Component {
 
         this.state = {
             mainCameraPosition: new THREE.Vector3(1, 200, 0.2),
+            paused: false,
             rotation: new THREE.Euler()
         };
     }
@@ -86,8 +87,6 @@ class World extends React.Component {
     }
 
     componentDidMount() {
-        // document.addEventListener('keydown', this._onKeyDown, false);
-
         const controls = new TrackballControls(this.mainCamera, ReactDOM.findDOMNode(this.react3));
         controls.rotateSpeed = 3.0;
         controls.zoomSpeed = 1.2;
@@ -106,17 +105,26 @@ class World extends React.Component {
         //     });
         // });
 
+        controls.addEventListener(`change`, () => {
+            this.setState({
+                paused: true
+            })
+        });
+
         this.controls = controls;
     }
 
     componentWillUnmount() {
-        // document.removeEventListener('keydown', this._onKeyDown, false);
         this.controls.dispose();
         delete this.controls;
     }
 
     _onAnimate = () => {
         this.controls.update();
+
+        if (this.state.paused) {
+            return;
+        }
 
         this.setState({
             rotation: new THREE.Euler(
@@ -142,6 +150,7 @@ World.propTypes = {
     height: React.PropTypes.number,
     datasetFileUrl: React.PropTypes.string,
     informationLayerFileUrl: React.PropTypes.string,
+    animate: React.PropTypes.bool,
     datasetFetch: React.PropTypes.instanceOf(PromiseState),
     informationLayerFetch: React.PropTypes.instanceOf(PromiseState),
     updateStatus: React.PropTypes.func,
