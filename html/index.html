@@ -209,13 +209,21 @@
     reactBioWeb3D.render({
         baseUrl: '',
         datasetFilePath: '/data/platynereis_dumerilii_32203/dataset.json'
-        });
+    });
 
     function renderOnSelectChange(obj) {
-        reactBioWeb3D.render({
-            baseUrl: '',
-            informationLayerFilePath: '/data/platynereis_dumerilii_32203/' + obj.value + '.json'
-        });
+        if (obj.value) {
+            reactBioWeb3D.render({
+                baseUrl: '',
+                informationLayerFilePath: '/data/platynereis_dumerilii_32203/' + obj.value + '.json'
+            });
+        } else {
+            reactBioWeb3D.render({
+                baseUrl: '',
+                datasetFilePath: '/data/platynereis_dumerilii_32203/dataset.json'
+            });
+        }
+
     }
 </script>
 
