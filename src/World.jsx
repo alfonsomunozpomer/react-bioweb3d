@@ -14,8 +14,7 @@ class World extends React.Component {
 
         this.state = {
             mainCameraPosition: new THREE.Vector3(100, 100, 100),
-            title: `Loading...`,
-            subHeader: `Please wait`
+            rotation: new THREE.Euler()
         };
     }
 
@@ -37,7 +36,7 @@ class World extends React.Component {
             const datasetModel = datasetFetch.value.dataset;
 
             title = datasetModel.name;
-            dataset = <DataSet points={datasetModel.points.map(this._computeCenterFunction(datasetModel.points))} />;
+            dataset = <DataSet points={datasetModel.points.map(this._computeCenterFunction(datasetModel.points))} rotation={this.state.rotation} />;
 
             if (informationLayerFetch.fulfilled) {
                 const informationLayerModel = informationLayerFetch.value;
@@ -48,6 +47,7 @@ class World extends React.Component {
                         points={datasetModel.points.map(this._computeCenterFunction(datasetModel.points))}
                         numClass={informationLayerModel.numClass}
                         values={informationLayerModel.values}
+                        rotation={this.state.rotation}
                     />
             }
         }
@@ -75,8 +75,10 @@ class World extends React.Component {
                                            near={1}
                                            far={10000}
                                            position={this.state.mainCameraPosition} />
-                        {dataset}
-                        {informationLayer}
+                        <group rotation={this.state.rotation}>
+                            {dataset}
+                            {informationLayer}
+                        </group>
                     </scene>
                 </React3>
             </div>
@@ -114,7 +116,15 @@ class World extends React.Component {
     }
 
     _onAnimate = () => {
-        this.controls.update()
+        this.controls.update();
+
+        this.setState({
+            rotation: new THREE.Euler(
+                this.state.rotation.x + 0.012,
+                0,
+                0
+            )
+        });
     }
 
     _computeCenterFunction = (points) => {
