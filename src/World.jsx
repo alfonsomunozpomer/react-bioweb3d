@@ -6,19 +6,14 @@ import TrackballControls from '../lib/trackball';
 
 import DataSet from './DataSet.jsx'
 
-const {name, chain, points} = require(`../data/platynereis_32203.json`).dataset;
-const informationLayer = require(`../data/C4x13.1M.json`).information[0];
-
 class World extends React.Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            mainCameraPosition: new THREE.Vector3(100, 100, 100)
-        };
-
-        this._onAnimate = () => {
-            this.controls.update();
+            mainCameraPosition: new THREE.Vector3(100, 100, 100),
+            title: ``,
+            subHeader: ``
         };
     }
 
@@ -26,16 +21,14 @@ class World extends React.Component {
         const width = this.props.width; // canvas width
         const height = this.props.height; // canvas height
 
-        console.log(this.state.mainCameraPosition);
-
         return (
             <div>
                 <div style={{position:`absolute`, color:`white`}}>
                     <div>
-                        <p style={{fontSize: `20px`, fontWeight: `bold`}}>{name}</p>
+                        <p style={{fontSize: `20px`, fontWeight: `bold`}}>{this.state.title}</p>
                     </div>
                     <div>
-                        <p>{informationLayer.name}</p>
+                        <p>{this.state.subHeader}</p>
                     </div>
                 </div>
                 <React3 ref={react3 =>  { this.react3 = react3; }}
@@ -51,7 +44,9 @@ class World extends React.Component {
                                            near={1}
                                            far={10000}
                                            position={this.state.mainCameraPosition} />
-                        <DataSet name={name} chain={chain} points={points} informationLayer={informationLayer} />
+                        <DataSet datasetFileUrl={this.props.datasetFileUrl}
+                                 informationLayerFileUrl={this.props.informationLayerFileUrl}
+                                 setSceneCaptionsCallback={this._setTitleAndSubHeader} />
                     </scene>
                 </React3>
             </div>
@@ -87,11 +82,24 @@ class World extends React.Component {
         this.controls.dispose();
         delete this.controls;
     }
+
+    _onAnimate = () => {
+        this.controls.update()
+    }
+
+    _setTitleAndSubHeader = (title, subHeader) => {
+        this.setState({
+            title: title,
+            subHeader: subHeader
+        })
+    }
 }
 
 World.propTypes = {
     width: React.PropTypes.number,
-    height: React.PropTypes.number
+    height: React.PropTypes.number,
+    datasetFileUrl: React.PropTypes.string,
+    informationLayerFileUrl: React.PropTypes.string
 };
 
 World.defaultProps = {
