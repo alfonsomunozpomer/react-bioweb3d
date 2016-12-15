@@ -7,8 +7,8 @@ export default function({ baseUrl = ``,
                           datasetFilePath = `/data/platynereis_dumerilii_32203/dataset.json`,
                           informationLayerFilePath = `` }) {
 
-    const datasetFileUrl = Url.resolve(baseUrl, datasetFilePath),
-          informationLayerFileUrl = Url.resolve(baseUrl, informationLayerFilePath);
+    const datasetFileUrl = datasetFilePath ? Url.resolve(baseUrl, datasetFilePath) : ``;
+    const informationLayerFileUrl = informationLayerFilePath ? Url.resolve(baseUrl, informationLayerFilePath) : ``;
 
     ReactDOM.render(<World datasetFileUrl={datasetFileUrl} informationLayerFileUrl={informationLayerFileUrl}/>,
         document.getElementById("container"));
