@@ -15,7 +15,7 @@ module.exports = {
         new CleanWebpackPlugin(['dist'], {verbose: true, dry: false}),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'dependencies',
-            filename: 'vendorCommons.bundle.js',
+            filename: 'vendorCommonsRBW3D.bundle.js',
             minChunks: Infinity     // Explicit definition-based split. Don’t put shared modules between main and demo
         })                          // entries in vendor.bundle.js
 
