@@ -57,11 +57,15 @@ class InformationLayer extends React.Component {
     }
 
     _pointSize = (v) => {
-        const firstRelevantClusters = 5;
-        if (v > firstRelevantClusters) {
-            return 2.0;
+        if (this.props.colourScheme === `ranked`) {
+            const firstRelevantClusters = 5;
+            if (v > firstRelevantClusters) {
+                return 2.0;
+            } else {
+                return 4.0;
+            }
         } else {
-            return 4.0;
+            return 2.0;
         }
     }
 
