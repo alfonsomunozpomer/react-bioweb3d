@@ -7,7 +7,7 @@ export default function({ baseUrl,
                           datasetFilePath,
                           informationLayerFilePath,
                           colourScheme,
-                          mountNode = document.getElementById(`container`),}) {
+                          mountNode = document.getElementById(`container`)}) {
 
     const datasetFileUrl = datasetFilePath ? Url.resolve(baseUrl, datasetFilePath) : ``;
     const informationLayerFileUrl = informationLayerFilePath ? Url.resolve(baseUrl, informationLayerFilePath) : ``;
