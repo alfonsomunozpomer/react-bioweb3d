@@ -109,8 +109,8 @@ WorldView.propTypes = {
     height: React.PropTypes.number,
     title: React.PropTypes.string.isRequired,
     subHeader: React.PropTypes.string.isRequired,
-    dataset: React.PropTypes.instanceOf(DataSet),
-    informationLayer: React.PropTypes.instanceOf(InformationLayer)
+    dataset: React.PropTypes.element,
+    informationLayer: React.PropTypes.element
 };
 
 WorldView.defaultProps = {
