@@ -16,7 +16,7 @@ class World extends React.Component {
         const allFetches = PromiseState.all([datasetFetch, informationLayerFetch]);
 
         if (allFetches.pending) {
-            return <WorldView title='Loading...' subHeader='' dataset={null} />
+            return <WorldView title='Loading...' subHeader='' />
         } else if (allFetches.rejected) {
             // Draw the dataset if possible
             if (datasetFetch.fulfilled) {
