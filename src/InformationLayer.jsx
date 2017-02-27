@@ -41,7 +41,8 @@ class InformationLayer extends React.Component {
         const roundedMin = Math.ceil(min);
         const roundedMax = Math.floor(max);
         return Math.floor(Math.random() * (roundedMax - roundedMin + 1)) + roundedMin;
-    }
+    };
+
     _colorGradient = (v) => {
         if (this.props.colourScheme === `ranked`) {
             const firstRelevantClusters = 5;
@@ -54,7 +55,7 @@ class InformationLayer extends React.Component {
         } else {
             return this._random(0x000000, 0xffffff);
         }
-    }
+    };
 
     _pointSize = (v) => {
         if (this.props.colourScheme === `ranked`) {
